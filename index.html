@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Chess Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-info">
+            <div class="player-info">
+                <div id="whitePlayer" class="player">
+                    <span class="player-name">White</span>
+                    <span id="whiteTime" class="timer">10:00</span>
+                </div>
+                <div id="blackPlayer" class="player">
+                    <span class="player-name">Black</span>
+                    <span id="blackTime" class="timer">10:00</span>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="createRoom" class="btn">Create Room</button>
+                <button id="joinRoom" class="btn">Join Room</button>
+                <button id="flipBoard" class="btn">Flip Board</button>
+                <button id="resetGame" class="btn">New Game</button>
+                
+                <div class="theme-selector">
+                    <label for="boardTheme">Board Theme:</label>
+                    <select id="boardTheme" class="theme-select">
+                        <option value="classic">Classic</option>
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="purple">Purple</option>
+                        <option value="brown">Brown</option>
+                    </select>
+                </div>
+            </div>
+            <div id="roomInfo" class="room-info" style="display: none;">
+                <p>Room Code: <span id="roomCode"></span></p>
+                <p>Your Color: <span id="playerColor"></span></p>
+                <p>Status: <span id="gameStatus">Waiting for opponent...</span></p>
+            </div>
+        </div>
+        
+        <div class="board-wrapper">
+            <div id="chessboard" class="chessboard theme-classic"></div>
+        </div>
+        
+        <div class="move-history">
+            <h3>Move History</h3>
+            <div id="moveList"></div>
+        </div>
+    </div>
+
+    <!-- Sound effects -->
+    <audio id="moveSound" src="standard_move.wav"></audio>
+    <audio id="captureSound" src="standard_capture.wav"></audio>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, update, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtZ_6hPFLfnRPYq9zNFu6UZH_NrHtKqQw",
+            authDomain: "chess-online-980e7.firebaseapp.com",
+            databaseURL: "https://chess-online-980e7-default-rtdb.firebaseio.com",
+            projectId: "chess-online-980e7",
+            storageBucket: "chess-online-980e7.firebasestorage.app",
+            messagingSenderId: "206825399673",
+            appId: "1:206825399673:web:14f0e4545323b292703ba8",
+            measurementId: "G-K2JXQY545L"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.firebaseDB = database;
+        window.firebaseRef = ref;
+        window.firebaseSet = set;
+        window.firebaseOnValue = onValue;
+        window.firebaseUpdate = update;
+        window.firebaseRemove = remove;
+        window.firebaseOnDisconnect = onDisconnect;
+
+        console.log("Firebase initialized successfully!");
+        window.firebaseReady = true;
+        document.dispatchEvent(new Event('firebaseReady'));
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,336 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap;
+    max-width: 1200px;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 200px;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.player {
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.player.active {
+    background: #4CAF50;
+    color: white;
+    transform: scale(1.05);
+}
+
+.player-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.timer {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #667eea;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background: #764ba2;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.room-info {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #2196F3;
+}
+
+.room-info p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.room-info span {
+    font-weight: bold;
+    color: #1976D2;
+}
+
+/* Theme Selector */
+.theme-selector {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.theme-selector label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+}
+
+.theme-select {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+}
+
+.theme-select:hover {
+    border-color: #667eea;
+}
+
+.board-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 25px;
+}
+
+.chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    grid-template-rows: repeat(8, 60px);
+    border: 3px solid #333;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.square {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+/* Default Classic Theme */
+.chessboard.theme-classic .square.light {
+    background-color: #f0d9b5;
+}
+
+.chessboard.theme-classic .square.dark {
+    background-color: #b58863;
+}
+
+/* Blue Theme */
+.chessboard.theme-blue .square.light {
+    background-color: #e3f2fd;
+}
+
+.chessboard.theme-blue .square.dark {
+    background-color: #1e88e5;
+}
+
+/* Green Theme */
+.chessboard.theme-green .square.light {
+    background-color: #e8f5e9;
+}
+
+.chessboard.theme-green .square.dark {
+    background-color: #4caf50;
+}
+
+/* Purple Theme */
+.chessboard.theme-purple .square.light {
+    background-color: #f3e5f5;
+}
+
+.chessboard.theme-purple .square.dark {
+    background-color: #9c27b0;
+}
+
+/* Brown Theme */
+.chessboard.theme-brown .square.light {
+    background-color: #d7ccc8;
+}
+
+.chessboard.theme-brown .square.dark {
+    background-color: #5d4037;
+}
+
+.square:hover {
+    opacity: 0.8;
+}
+
+.square.selected {
+    background-color: #baca44 !important;
+    box-shadow: inset 0 0 0 3px #829769;
+}
+
+.square.legal-move::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.square.legal-move.has-piece::after {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: 3px solid rgba(255, 0, 0, 0.5);
+    border-radius: 0;
+}
+
+.piece {
+    pointer-events: none;
+    user-select: none;
+    cursor: grab;
+    transition: transform 0.1s;
+}
+
+.piece:active {
+    cursor: grabbing;
+}
+
+/* Board notation */
+.notation {
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+.move-history {
+    min-width: 200px;
+    max-width: 250px;
+}
+
+.move-history h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+}
+
+#moveList {
+    max-height: 400px;
+    overflow-y: auto;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.move-entry {
+    padding: 8px;
+    margin-bottom: 5px;
+    background: white;
+    border-radius: 5px;
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.move-number {
+    font-weight: bold;
+    color: #666;
+    min-width: 25px;
+}
+
+.move {
+    color: #333;
+    font-family: 'Courier New', monospace;
+}
+
+/* Scrollbar styling */
+#moveList::-webkit-scrollbar {
+    width: 8px;
+}
+
+#moveList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#moveList::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+#moveList::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .chessboard {
+        grid-template-columns: repeat(8, 50px);
+        grid-template-rows: repeat(8, 50px);
+    }
+    
+    .square {
+        width: 50px;
+        height: 50px;
+        font-size: 32px;
+    }
+}
